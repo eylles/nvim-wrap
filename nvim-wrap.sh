@@ -25,7 +25,7 @@ else
 nv_bin="${nv_bin}"
 
 # pipe directory
-pipe="${XDG_RUNTIME_DIR:-/tmp}/nvim"
+pipe_loc="${pipe_loc}"
 __HEREDOC__
 fi
 
