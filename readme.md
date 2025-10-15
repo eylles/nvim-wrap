@@ -16,10 +16,12 @@ here 2 scripts are provided:
 
 installation:
 ```sh
-# just run
+# clone the repo
+git clone https://github.com/eylles/nvim-wrap.git
+# to install just run
+make install clean
 # by default this will put both scripts in:
 #     $HOME/.local/bin
-make install clean
 ```
 
 Now add some alias like this to your shell's rc (bashrc, zshrc, .profile)
@@ -28,7 +30,12 @@ alias nvim="nvim-wrap"
 ```
 
 or even link the nvim-wrap script to `/usr/bin/editor` if you are using the debian alternatives
-system
+system, just edit the `config.mk` and change PREFIX to `/usr/local`, install and then run this
+command to register `nvim-wrap` onto the alternatives system:
+
+```sh
+sudo update-alternatives --install /usr/bin/editor editor /usr/local/bin/nvim-wrap 30
+```
 
 have fun!!!
 
