@@ -40,6 +40,47 @@ send_comms () {
 __HEREDOC__
 fi
 
+version=@VERSION@
+
+show_help () {
+    printf '%s\n\t%s\n' "${myname}:" \
+                        "send messages to every nvim rpc server"
+    printf '%s\n\t%s\n' "Version:" "$version"
+    printf '%s\n\t%s\n' "Usage:" \
+                        "${myname} -v | -h | [ nvim commands ]"
+    printf '%s\n\t%s\n' "    -h" \
+                        "print out this help message, 'help' and '--help' are supported too"
+    printf '%s\n\t%s\n' "    -v" \
+                        "print out the version, 'version' and '--version' are supported too"
+    printf '\n%s\n'     "About:"
+    printf '\t%s\n'     "$myname is a neovim wrapper script intended to broadcast the given commands"
+    printf '\t%s\n'     "to every nvim instance with an rpc pipe registered under a set location."
+    printf '\t%s\n'     "The default location is set on: \${XDG_RUNTIME_DIR:-/tmp}/nvim"
+    printf '\t%s\n'     "altho the configuration for nvim-wrap will be used to determine the dir"
+    printf '\t%s\n'     "containing the rpc socket for each neovim instance, which by convention on"
+    printf '\t%s\n'     "both scripts are given the name 'nvim.PID.pipe' where 'PID' is the process"
+    printf '\t%s\n'     "id of each instance."
+    printf '\n%s\n'     "Configuration:"
+    printf '\t%s\n'     "The $myname base configuration is generated upon first run, it will be"
+    printf '\t%s'       "located by default at: "
+    printf '%s\n'       "\${XDG_CONFIG_HOME:-\${HOME}/.config}/nvim-send/configrc"
+    printf '\t%s'       "on this system that expands to: "
+    printf '%s\n'       "$config_file"
+    printf '\t%s\n'     "the configuration file for nvim-wrap is also loaded blindly to get the set"
+    printf '\t%s\n'     "value for the \$pipe_loc variable."
+    exit 0
+}
+
+case "$1" in
+    help|-h|--help)
+        show_help
+        ;;
+    version|-v|--version)
+        printf "%s\n" "nvim-send $version"
+        exit 0
+        ;;
+esac
+
 if [ -f "$config_nvw" ]; then
     . "$config_nvw"
 fi

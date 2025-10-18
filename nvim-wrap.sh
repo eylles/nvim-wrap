@@ -29,6 +29,43 @@ pipe_loc="${pipe_loc}"
 __HEREDOC__
 fi
 
+version=@VERSION@
+
+show_help () {
+    printf '%s\n\t%s\n' "${myname}:" \
+                        "nvim wrapper"
+    printf '%s\n\t%s\n' "Version:" "$version"
+    printf '%s\n\t%s\n' "Usage:" \
+                        "${myname} -v | -h | [ nvim flags and files ]"
+    printf '%s\n\t%s\n' "    -h" \
+                        "print out this help message, 'help' and '--help' are supported too"
+    printf '%s\n\t%s\n' "    -v" \
+                        "print out the version, 'version' and '--version' are supported too"
+    printf '\n%s\n'     "About:"
+    printf '\t%s\n'     "$myname is a neovim wrapper intended to explicitly set the location of the"
+    printf '\t%s\n'     "neovim rpc pipe socket in a user configurable location, it also allows for"
+    printf '\t%s\n'     "setting, unsetting and otherwise modifiying the environment variables"
+    printf '\t%s\n'     "neovim is launched with through the configuration."
+    printf '\n%s\n'     "Configuration:"
+    printf '\t%s\n'     "The $myname base configuration is generated upon first run, it will be"
+    printf '\t%s'       "located by default at: "
+    printf '%s\n'       "\${XDG_CONFIG_HOME:-\${HOME}/.config}/nvim-wrap/configrc"
+    printf '\t%s'       "on this system that expands to: "
+    printf '%s\n'       "$config_file"
+    exit 0
+}
+
+case "$1" in
+    help|-h|--help)
+        show_help
+        ;;
+    version|-v|--version)
+        printf "%s\n" "nvim-wrap $version"
+        $nv_bin --version
+        exit 0
+        ;;
+esac
+
 mypid="$$"
 
 # make pipe dir
