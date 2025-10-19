@@ -1,0 +1,137 @@
+.TH NVIM-WRAP 1 nvim-wrap\-@VERSION@
+.SH NAME
+nvim-wrap \- a neovim wrapper to set the RPC pipe socket
+.SH SYNOPSIS
+.B nvim-wrap
+.RB [ "nvim options" ]
+.IR file
+.PP
+.B nvim-send
+.RB [ commands ]
+.SH DESCRIPTION
+The program
+.IR nvim-wrap
+is a wrapper script to set the neovim RPC pipe socket to a user define-able
+location, this facilitates user scripting of the neovim RPC capabilities through the
+.IR nvim-send
+program which will dispatch the neovim commands to every running neovim instance with a pipe file
+registered on the common location.
+
+For information on the neovim program consult
+.B nvim
+(1)
+
+Internally the wrappers are rather simple.
+
+In the case of
+.IR nvim-wrap
+just executes the neovim binary with the
+.B --listen
+flag and sets the name of the pipe to be the nvim.PID.pipe where
+.B PID
+is the Process ID of the wrapping shell that will be inherited onto the neovim instance through
+exec.
+
+Meanwhile
+.IR nvim-send
+defines the internal nvim_send function that uses the
+.B --server
+with the pipe dir location defined on the nvim-wrap config and the
+.B --remote-send
+flag which will be populated by whichever string is passed onto the function and terminated with the
+neovim caret return <CR> command line sequence, the nvim_send function takes care of dispatching the
+commands to every neovim instance, so all needed is to pass along a string as the argument to
+nvim-send, however if nvim-send is not passed an argument the internal function send_comms will be
+ran, the function is by default empty and is intended to be user overwriteable inside the config
+file.
+
+.SH OPTIONS
+.TP
+.B "help, \-h, \-\-help"
+Print brief usage information to standard output and exit.
+.TP
+.B "version, \-v, \-\-version"
+print version information then exit, for nvim-wrap it will also print neovim's version info.
+.SH CONFIGURATION
+.P
+Even tho the commands nvim-wrap and nvim-send interoperate they have different configuration files,
+the format for the configuration file is a shell, meaning that variables and functions can be
+defined and modified inside the configuration at the whim of the users to create additional
+customizations or workarounds for their specific environment and desired neovim experience.
+
+.P
+.IR NVIM-WRAP
+
+The configuration of nvim-wrap is located at:
+.B ${XDG_CONFIG_HOME:-${HOME}/.config}/nvim-wrap/configrc
+
+.P
+To see the location of the configuration file and generating it if running for the first time, run
+nvim-wrap with the help flag
+
+.P
+The following options are available for the config file:
+
+.TP
+.B
+nv_bin
+the neovim binary to use, by default
+.B /usr/bin/nvim
+is used, but this value can be changed to the distribution's reccomended path for the neovim binary,
+you use an expansion from a subshell running the
+.B command
+(1)
+command with the -v flag to set the neovim binary dynamically like the following example if you'd
+like.
+
+.RS
+.EX
+.eo
+nv_bin="$(command -v nvim)"
+.ec
+.EE
+.RE
+
+
+.TP
+.B
+pipe_loc
+the directory where the pipe files for every neovim instance launched through nvim-wrap will be
+located at
+.B ${XDG_RUNTIME_DIR:-/tmp}/nvim
+is used, this assignment will try to use the value of the XDG_RUNTIME_DIR environment variable, were
+it not set it will default to the system's tmp dir.
+
+
+.P
+.IR NVIM-SEND
+
+The configuration of nvim-send is located at:
+.B ${XDG_CONFIG_HOME:-${HOME}/.config}/nvim-send/configrc
+
+.P
+To see the location of the configuration file and generating it if running for the first time, run
+nvim-send with the help flag
+
+.P
+The configuration for nvim-send is somewhat simpler as it does not define any option, for the values
+of the
+.B nv_bin
+and
+.B pipe_loc
+options nvim-send just outright loads the configuration fro nvim-wrap, instead what you get is again
+a shell format file that is loaded rather than executed and defines just the empty function
+.IR send_comms
+which is intended to be user populated, this function will be ran in the case that nvim-send is
+executed without any arguments.
+
+.SH AUTHOR
+.EX
+eylles                 <ed.ylles1997 at gmail.com>
+.EE
+.SH HOMEPAGE
+.TP
+Source code:
+.EE
+https://github.com/eylles/nvim-wrap
+.EX

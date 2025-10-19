@@ -68,6 +68,7 @@ show_help () {
     printf '%s\n'       "$config_file"
     printf '\t%s\n'     "the configuration file for nvim-wrap is also loaded blindly to get the set"
     printf '\t%s\n'     "value for the \$pipe_loc variable."
+    printf '\n%s\n'     "For more information please check the manual page for nvim-wrap(1)"
     exit 0
 }
 

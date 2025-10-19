@@ -52,6 +52,7 @@ show_help () {
     printf '%s\n'       "\${XDG_CONFIG_HOME:-\${HOME}/.config}/nvim-wrap/configrc"
     printf '\t%s'       "on this system that expands to: "
     printf '%s\n'       "$config_file"
+    printf '\n%s\n'     "For more information please check the manual page for nvim-wrap(1)"
     exit 0
 }
 
