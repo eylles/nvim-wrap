@@ -25,7 +25,7 @@ else
 nv_bin="${nv_bin}"
 
 # pipe directory
-pipe_loc="${pipe_loc}"
+pipe_loc="\${XDG_RUNTIME_DIR:-/tmp}/nvim"
 __HEREDOC__
 fi
 
@@ -46,6 +46,11 @@ show_help () {
     printf '\t%s\n'     "neovim rpc pipe socket in a user configurable location, it also allows for"
     printf '\t%s\n'     "setting, unsetting and otherwise modifiying the environment variables"
     printf '\t%s\n'     "neovim is launched with through the configuration."
+    printf '\t%s\n'     "The default location is set on: \${XDG_RUNTIME_DIR:-/tmp}/nvim/"
+    printf '\t%s\n'     "altho the configuration for nvim-wrap will be used to determine the dir"
+    printf '\t%s\n'     "containing the rpc socket for each neovim instance, which by convention is"
+    printf '\t%s\n'     "given the name 'nvim.PID.timestamp' where 'PID' is the process id of each"
+    printf '\t%s\n'     "instance and timestamp is the seconds since epoch."
     printf '\n%s\n'     "Configuration:"
     printf '\t%s\n'     "The $myname base configuration is generated upon first run, it will be"
     printf '\t%s'       "located by default at: "
