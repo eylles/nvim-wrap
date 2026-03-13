@@ -74,6 +74,8 @@ if [ ! -d "$pipe_loc" ]; then
     mkdir -p "$pipe_loc"
 fi
 
-pipe_file="${pipe_loc}/nvim.${mypid}.pipe"
+timestamp="$(date '+%s')"
+
+pipe_file="${pipe_loc}/nvim.${mypid}.${timestamp}"
 
 exec $nv_bin --listen "$pipe_file" "$@"
