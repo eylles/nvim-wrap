@@ -27,10 +27,12 @@ In the case of
 .IR nvim-wrap
 just executes the neovim binary with the
 .B --listen
-flag and sets the name of the pipe to be the nvim.PID.pipe where
+flag and sets the name of the pipe to be the nvim.PID.timestamp where
 .B PID
 is the Process ID of the wrapping shell that will be inherited onto the neovim instance through
-exec.
+exec and
+.B timestamp
+is the number of seconds since the unix epoch.
 
 Meanwhile
 .IR nvim-send
@@ -119,8 +121,8 @@ of the
 .B nv_bin
 and
 .B pipe_loc
-options nvim-send just outright loads the configuration fro nvim-wrap, instead what you get is again
-a shell format file that is loaded rather than executed and defines just the empty function
+options nvim-send just outright loads the configuration from nvim-wrap, instead what you get is
+again a shell format file that is loaded rather than executed and defines just the empty function
 .IR send_comms
 which is intended to be user populated, this function will be ran in the case that nvim-send is
 executed without any arguments.
