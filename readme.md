@@ -22,6 +22,7 @@ git clone https://github.com/eylles/nvim-wrap.git
 make install clean
 # by default this will put both scripts in:
 #     $HOME/.local/bin
+# you can configure that in config.mk
 ```
 
 Now add some alias like this to your shell's rc (bashrc, zshrc, .profile)
@@ -35,6 +36,9 @@ command to register `nvim-wrap` onto the alternatives system:
 
 ```sh
 sudo update-alternatives --install /usr/bin/editor editor /usr/local/bin/nvim-wrap 30
+# or if you want something more "complete", set "ZIP_MAN = true" in config.mk then run this command
+sudo update-alternatives --install /usr/bin/editor editor /usr/local/bin/nvim-wrap 30 --slave /usr/share/man/man1/editor.1.gz editor.1.gz /usr/local/man/man1/nvim-wrap.1.gz
+# you will get the zipped manpage as editor.1.gz and accessible from man editor
 ```
 
 have fun!!!

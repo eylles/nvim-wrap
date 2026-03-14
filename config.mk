@@ -6,3 +6,6 @@ BIN_LOC = ${DESTDIR}$(PREFIX)/bin
 
 # manpage location
 MANPREFIX = $(DESTDIR)$(PREFIX)/share/man
+
+# use zipped manpage
+ZIP_MAN ?= false

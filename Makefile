@@ -3,6 +3,8 @@
 
 VERSION = 0.0.0
 
+ZIP_MAN ?= false
+
 all: nvim-wrap nvim-send nvim-wrap.1
 
 include config.mk
@@ -22,12 +24,18 @@ install: all
 	mkdir -p $(BIN_LOC)
 	cp -vf nvim-wrap $(BIN_LOC)
 	mkdir -p $(MANPREFIX)/man1
-	cp -vf nvim-wrap.1 $(MANPREFIX)/man1/
+	@if [ "$(ZIP_MAN)" = "true" ]; then \
+		echo "Installing compressed manpage..."; \
+		gzip -c nvim-wrap.1 > nvim-wrap.1.gz; \
+		cp -vf nvim-wrap.1.gz $(MANPREFIX)/man1/; \
+	else \
+		echo "Installing uncompressed manpage..."; \
+		cp -vf nvim-wrap.1 $(MANPREFIX)/man1/; \
+	fi
 	cp -vf nvim-send $(BIN_LOC)
 uninstall:
 	rm -vf $(BIN_LOC)/nvim-wrap
 	rm -vf $(BIN_LOC)/nvim-send
-	rm -vf $(MANPREFIX)/man1/nvim-wrap.1
+	rm -vf $(MANPREFIX)/man1/nvim-wrap.1*
 clean:
-	rm -vf nvim-wrap nvim-send nvim-wrap.1
-
+	rm -vf nvim-wrap nvim-send nvim-wrap.1 nvim-wrap.1.gz
