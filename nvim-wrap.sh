@@ -75,13 +75,13 @@ esac
 
 mypid="$$"
 
+timestamp="$(date '+%s')"
+
+pipe_file="${pipe_loc}/nvim.${mypid}.${timestamp}"
+
 # make pipe dir
 if [ ! -d "$pipe_loc" ]; then
     mkdir -p "$pipe_loc"
 fi
-
-timestamp="$(date '+%s')"
-
-pipe_file="${pipe_loc}/nvim.${mypid}.${timestamp}"
 
 exec $nv_bin --listen "$pipe_file" "$@"
