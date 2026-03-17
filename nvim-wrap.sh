@@ -60,7 +60,11 @@ show_help () {
     printf '\n%s\n'     "For more information please check the manual page for nvim-wrap(1)"
 }
 
-case "$1" in
+pipe_from_args=""
+
+ARGSC="$#"
+
+while [ "$ARGSC" -gt 0 ]; do case "$1" in
     help|-h|--help)
         show_help
         $nv_bin --help
@@ -71,13 +75,34 @@ case "$1" in
         $nv_bin --version
         exit 0
         ;;
-esac
+    --listen)
+        if [ -n "$2" ]; then
+            pipe_file="$2"
+            pipe_from_args=1
+            shift 2  # Remove --listen and its value from the arguments
+            ARGSC=$((ARGSC - 2))
+        else
+            echo "Error: --listen requires a file path argument."
+            exit 1
+        fi
+        ;;
+    *)
+        # Preserve other arguments
+        set -- "$@" "$1"
+        shift
+        ARGSC=$((ARGSC - 1))
+        ;;
+esac done
 
-mypid="$$"
+if [ -z "$pipe_from_args" ]; then
+    mypid="$$"
 
-timestamp="$(date '+%s')"
+    timestamp="$(date '+%s')"
 
-pipe_file="${pipe_loc}/nvim.${mypid}.${timestamp}"
+    pipe_file="${pipe_loc}/nvim.${mypid}.${timestamp}"
+else
+    pipe_loc="${pipe_file%/*}"
+fi
 
 # make pipe dir
 if [ ! -d "$pipe_loc" ]; then
