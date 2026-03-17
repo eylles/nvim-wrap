@@ -58,12 +58,13 @@ show_help () {
     printf '\t%s'       "on this system that expands to: "
     printf '%s\n'       "$config_file"
     printf '\n%s\n'     "For more information please check the manual page for nvim-wrap(1)"
-    exit 0
 }
 
 case "$1" in
     help|-h|--help)
         show_help
+        $nv_bin --help
+        exit 0
         ;;
     version|-v|--version)
         printf "%s\n" "nvim-wrap $version"
