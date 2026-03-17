@@ -9,10 +9,18 @@ here 2 scripts are provided:
     and unset environment variables if you want or to launch neovim with another wrapper, your
     imagination is the limit.
 
-`nvim-send`: sends neovim commands into a pipe (by default `/tmp/nvim/nvim.PID.pipe`), if you
-    provide the script with arguments it will send them like a single command, if you do not it
-    will instead run the `send_comms` function which can be overriden from the config with whatever
-    you want inside.
+`nvim-send`: sends neovim commands into all nvim RTC pipes, if you provide the script with arguments
+    it will send them like a single command, if you do not it will instead run the `send_comms`
+    function which can be overriden from the config with whatever you want inside.
+
+The RTC pipes will be defined as `$XDG_RUNTIME_DIR/nvim/nvim.PID.timestamp`, where PID is the
+process ID of the nvim-wrap script which is then inherited to the neovim instance by running it with
+exec, the timestamp is the amount of seconds since unix epoch at the time before the nvim instance
+is exec'd, if for whatever reason `$XDG_RUNTIME_DIR` was not set in the environment the script falls
+back to `/tmp` following the behaviour from upstream.
+
+The location for the RTC pipe can be set on `${XDG_CONFIG_HOME:-${HOME}/.config}/nvim-wrap/configrc`
+by setting the var `pipe_loc` to a different dir.
 
 installation:
 ```sh
